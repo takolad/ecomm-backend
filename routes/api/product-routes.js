@@ -8,8 +8,24 @@ router.get('/', (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
   try {
+    const productData = await Product.findAll({
+      // JOIN with Tag using the ProductTag through table and Category
+      include: [{ model: Category}, { model: Tag, through: ProductTag, as: 'merch_label' }]
+    });
+    res.status(200).json(productData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+  
+
+// get one product
+router.get('/:id', (req, res) => {
+  // find a single product by its `id`
+  // be sure to include its associated Category and Tag data
+  try {
     const productData = await Product.findByPk(req.params.id, {
-      // JOIN with locations, using the Trip through table
+      // JOIN with Tag using the ProductTag through table and Category
       include: [{ model: Category}, { model: Tag, through: ProductTag, as: 'merch_label' }]
     });
 
@@ -22,12 +38,6 @@ router.get('/', (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-});
-
-// get one product
-router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
 });
 
 // create new product
