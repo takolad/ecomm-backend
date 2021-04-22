@@ -7,7 +7,7 @@ router.get('/', async(req, res) => {
   // find all categories
   // be sure to include its associated Products
   try {
-    const categoryData = await Category.findAll();
+    const categoryData = await Category.findAll({include: [{model: Product}]});
     res.json(categoryData);
   } catch (err) {
     res.status(400).json(err);
@@ -18,7 +18,7 @@ router.get('/:id', async(req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
   try {
-    const categoryData = await Category.findByPk(req.params.id);
+    const categoryData = await Category.findByPk(req.params.id, {include: [{model: Product}]});
     res.json(categoryData);
   } catch (err) {
     res.status(400).json(err);
@@ -39,10 +39,39 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
+  try {
+    const updatedCategory = await Category.update(
+      req.body.category_name, {
+        where: {
+          id: req.body.id,
+        },
+    })
+    if (!updatedCategory[0]) {
+      res.status(404).json( { Message: 'No user with this id!' } );
+      return;
+    }
+    res.status(200).json(updatedCategory);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
+  try {
+    const deletedCategory = await Category.destroy({
+        where: {
+          id: req.body.id,
+        },
+    })
+    if (!deletedCategory[0]) {
+      res.status(404).json( { Message: 'No user with this id!' } );
+      return;
+    }
+    res.status(200).json(deletedCategory);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
