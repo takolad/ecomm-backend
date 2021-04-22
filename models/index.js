@@ -17,12 +17,22 @@ Category.hasMany(Product, {
 
 // Products belongToMany Tags (through ProductTag)
 Product.belongsToMany(Tag, { 
-  through: 'ProductTag',
+  through: {
+    model: ProductTag,
+    unique: false,
+  },
+  // Define an alias for when data is retrieved
+  as: 'merch_label',  // Unsure if name fits
 });
 
 // Tags belongToMany Products (through ProductTag)
 Tag.belongsToMany(Product, {
-  through: 'ProductTag',
+  through: {
+    model: ProductTag,
+    unique: false,
+  },
+  // Define an alias for when data is retrieved
+  as: 'tagged_products' // Unsure if name fits
 });
 
 module.exports = {
