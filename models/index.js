@@ -12,15 +12,16 @@ Product.belongsTo(Category, {
 // Categories have many Products
 Category.hasMany(Product, {
   foreignKey: 'category_id',
-  onDelete: 'CASCADE',  // Unsure if wanted
+  // onDelete: 'CASCADE',  // Unsure if wanted, default DELETE is SET NULL, UPDATE is CASCADE
 });
 
 // Products belongToMany Tags (through ProductTag)
 Product.belongsToMany(Tag, { 
   through: {
-    model: ProductTag,
+    model: 'ProductTag',
     unique: false,
   },
+  onDelete: 'SET DEFAULT',
   // Define an alias for when data is retrieved
   as: 'merch_label',  // Unsure if name fits
 });
@@ -28,9 +29,10 @@ Product.belongsToMany(Tag, {
 // Tags belongToMany Products (through ProductTag)
 Tag.belongsToMany(Product, {
   through: {
-    model: ProductTag,
+    model: 'ProductTag',
     unique: false,
   },
+  onDelete: 'SET DEFAULT',
   // Define an alias for when data is retrieved
   as: 'tagged_products' // Unsure if name fits
 });
