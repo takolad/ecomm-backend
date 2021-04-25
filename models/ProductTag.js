@@ -31,4 +31,6 @@ ProductTag.init(
   }
 );
 
+ProductTag.removeAttribute('id');
+
 module.exports = ProductTag;

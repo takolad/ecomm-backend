@@ -18,23 +18,23 @@ Category.hasMany(Product, {
 // Products belongToMany Tags (through ProductTag)
 Product.belongsToMany(Tag, { 
   through: {
-    model: 'ProductTag',
+    model: ProductTag,
     unique: false,
   },
-  onDelete: 'SET DEFAULT',
+  onDelete: 'SET NULL',
   // Define an alias for when data is retrieved
-  as: 'merch_label',  // Unsure if name fits
+  as: 'tags',
 });
 
 // Tags belongToMany Products (through ProductTag)
 Tag.belongsToMany(Product, {
   through: {
-    model: 'ProductTag',
+    model: ProductTag,
     unique: false,
   },
-  onDelete: 'SET DEFAULT',
+  onDelete: 'SET NULL',
   // Define an alias for when data is retrieved
-  as: 'tagged_products' // Unsure if name fits
+  as: 'products'
 });
 
 module.exports = {
