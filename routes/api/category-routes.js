@@ -41,13 +41,13 @@ router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   try {
     const updatedCategory = await Category.update(
-      req.body.category_name, {
+      req.body, {
         where: {
-          id: req.body.id,
+          id: req.params.id,
         },
-    })
+    });
     if (!updatedCategory[0]) {
-      res.status(404).json( { Message: 'No user with this id!' } );
+      res.status(404).json( { Message: 'No category with this id!' } );
       return;
     }
     res.status(200).json(updatedCategory);
@@ -61,11 +61,11 @@ router.delete('/:id', async (req, res) => {
   try {
     const deletedCategory = await Category.destroy({
         where: {
-          id: req.body.id,
+          id: req.params.id,
         },
     })
-    if (!deletedCategory[0]) {
-      res.status(404).json( { Message: 'No user with this id!' } );
+    if (!deletedCategory) {
+      res.status(404).json( { Message: 'No category with this id!' } );
       return;
     }
     res.status(200).json(deletedCategory);

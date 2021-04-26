@@ -51,9 +51,9 @@ router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
   try {
     const updatedTag = await Tag.update(
-      req.body.tag_name, {
+      req.body, {
         where: {
-          id: req.body.id,
+          id: req.params.id,
         },
     })
     if (!updatedTag[0]) {
